@@ -273,6 +273,23 @@ function esucodes_customize_register($wp_customize) {
         'section' => 'esucodes_blog',
         'type' => 'textarea',
     ));
+
+    // Integrations Section (NewsAPI)
+    $wp_customize->add_section('esucodes_integrations', array(
+        'title' => __('Integrations', 'esucodes'),
+        'priority' => 50,
+    ));
+
+    $wp_customize->add_setting('newsapi_key', array(
+        'default' => '',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    $wp_customize->add_control('newsapi_key', array(
+        'label' => __('NewsAPI Key', 'esucodes'),
+        'description' => __('Haberler bölümünü etkinleştirmek için NewsAPI anahtarınızı girin.', 'esucodes'),
+        'section' => 'esucodes_integrations',
+        'type' => 'text',
+    ));
 }
 add_action('customize_register', 'esucodes_customize_register');
 
@@ -569,7 +586,7 @@ function esucodes_get_newsapi_key() {
  * Returns array of 4 items: [title, description, url, image]
  */
 function esucodes_get_tech_news() {
-    $cache_key = 'esucodes_tech_news_v1';
+    $cache_key = 'esucodes_tech_news_v2';
     $cached = get_transient($cache_key);
     if ($cached !== false) {
         return $cached;
@@ -580,27 +597,60 @@ function esucodes_get_tech_news() {
         return new WP_Error('missing_api_key', 'NewsAPI anahtarı eksik');
     }
 
-    // Primary: top-headlines supports country+category (language param yok)
+    // Curated reputable sources (global)
+    $sources = array(
+        'bbc-news',
+        'reuters',
+        'the-verge',
+        'techcrunch',
+        'ars-technica',
+        'wired',
+        'the-wall-street-journal'
+    );
+
+    // Primary: top-headlines by sources (global)
     $endpoint = add_query_arg(array(
-        'country'   => 'tr',
-        'category'  => 'technology',
-        'pageSize'  => 4,
-        'apiKey'    => $api_key,
+        'sources'  => implode(',', $sources),
+        'pageSize' => 6,
+        'apiKey'   => $api_key,
     ), 'https://newsapi.org/v2/top-headlines');
 
     $response = wp_remote_get($endpoint, array('timeout' => 12));
     $code = is_wp_error($response) ? 0 : wp_remote_retrieve_response_code($response);
     $body = is_wp_error($response) ? '' : wp_remote_retrieve_body($response);
 
-    // Fallback: everything endpoint with language=tr if primary fails
+    // Fallback A: everything with domains whitelist (global, recent)
+    if ($code !== 200 || empty($body)) {
+        $domains = array(
+            'bbc.co.uk', 'bbc.com',
+            'reuters.com',
+            'theverge.com',
+            'techcrunch.com',
+            'arstechnica.com',
+            'wired.com',
+            'wsj.com'
+        );
+        $endpoint = add_query_arg(array(
+            'q'        => 'technology OR software OR AI OR cybersecurity',
+            'domains'  => implode(',', $domains),
+            'sortBy'   => 'publishedAt',
+            'pageSize' => 6,
+            'language' => 'en',
+            'apiKey'   => $api_key,
+        ), 'https://newsapi.org/v2/everything');
+        $response = wp_remote_get($endpoint, array('timeout' => 12));
+        $code = is_wp_error($response) ? 0 : wp_remote_retrieve_response_code($response);
+        $body = is_wp_error($response) ? '' : wp_remote_retrieve_body($response);
+    }
+
+    // Fallback B: top-headlines category technology for TR (localized)
     if ($code !== 200 || empty($body)) {
         $endpoint = add_query_arg(array(
-            'q'         => 'teknoloji OR yapay zeka OR yazılım',
-            'language'  => 'tr',
-            'sortBy'    => 'publishedAt',
-            'pageSize'  => 4,
+            'country'   => 'tr',
+            'category'  => 'technology',
+            'pageSize'  => 6,
             'apiKey'    => $api_key,
-        ), 'https://newsapi.org/v2/everything');
+        ), 'https://newsapi.org/v2/top-headlines');
         $response = wp_remote_get($endpoint, array('timeout' => 12));
         $code = is_wp_error($response) ? 0 : wp_remote_retrieve_response_code($response);
         $body = is_wp_error($response) ? '' : wp_remote_retrieve_body($response);
@@ -615,19 +665,55 @@ function esucodes_get_tech_news() {
         return new WP_Error('invalid_json', 'Geçersiz haber verisi');
     }
 
+    // Whitelist filter for reliability
+    $allowedHosts = array(
+        'bbc.co.uk','bbc.com','reuters.com','theverge.com','techcrunch.com','arstechnica.com','wired.com','wsj.com'
+    );
+    $allowedSources = array(
+        'BBC News','Reuters','The Verge','TechCrunch','Ars Technica','WIRED','The Wall Street Journal'
+    );
+
     $articles = array();
+    $seenUrls = array();
     foreach ($data['articles'] as $article) {
+        $title = isset($article['title']) ? sanitize_text_field($article['title']) : '';
+        $desc  = isset($article['description']) ? wp_strip_all_tags($article['description']) : '';
+        $url   = isset($article['url']) ? esc_url_raw($article['url']) : '';
+        $img   = isset($article['urlToImage']) ? esc_url_raw($article['urlToImage']) : '';
+        $sourceName = isset($article['source']['name']) ? sanitize_text_field($article['source']['name']) : '';
+
+        if (empty($title) || empty($url)) {
+            continue;
+        }
+
+        // Host whitelist check
+        $host = parse_url($url, PHP_URL_HOST);
+        if (!$host) { continue; }
+        $host = preg_replace('/^www\./', '', strtolower($host));
+        if (!in_array($host, $allowedHosts, true) && !in_array($sourceName, $allowedSources, true)) {
+            continue;
+        }
+
+        // Deduplicate by URL
+        if (isset($seenUrls[$url])) { continue; }
+        $seenUrls[$url] = true;
+
         $articles[] = array(
-            'title'       => isset($article['title']) ? sanitize_text_field($article['title']) : '',
-            'description' => isset($article['description']) ? wp_strip_all_tags($article['description']) : '',
-            'url'         => isset($article['url']) ? esc_url_raw($article['url']) : '#',
-            'image'       => isset($article['urlToImage']) ? esc_url_raw($article['urlToImage']) : '',
-            'source'      => isset($article['source']['name']) ? sanitize_text_field($article['source']['name']) : '',
+            'title'       => $title,
+            'description' => $desc,
+            'url'         => $url,
+            'image'       => $img,
+            'source'      => $sourceName,
         );
+
         if (count($articles) >= 4) break;
     }
 
-    set_transient($cache_key, $articles, 6 * HOUR_IN_SECONDS);
+    if (empty($articles)) {
+        return new WP_Error('no_trusted_news', 'Güvenilir haber bulunamadı');
+    }
+
+    set_transient($cache_key, $articles, 3 * HOUR_IN_SECONDS);
     return $articles;
 }
 
@@ -645,10 +731,7 @@ add_action('init', 'esucodes_refresh_news_cache_param');
  * TEMP: Provide NewsAPI key via filter when wp-config access is not available
  */
 add_filter('esucodes_news_api_key', function ($key) {
-    if (!empty($key)) {
-        return $key;
-    }
-    return '4ad32ac24c63417996d7ff9e4825ad99';
+    return $key; // allow overriding via filter without default key leakage
 });
 
 /**

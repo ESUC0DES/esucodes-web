@@ -68,6 +68,9 @@ get_header(); ?>
                 <div class="news-content">
                     <h3 class="news-title"><a href="<?php echo $url; ?>" target="_blank" rel="noopener"><?php echo $title; ?></a></h3>
                     <p class="news-excerpt"><?php echo $desc; ?></p>
+                    <?php if (!empty($item['source'])): ?>
+                        <p class="news-meta" style="margin-top:0.5rem;color:var(--text-muted);font-size:0.9rem;">Kaynak: <?php echo esc_html($item['source']); ?></p>
+                    <?php endif; ?>
                 </div>
             </article>
             <?php endforeach; else : ?>
