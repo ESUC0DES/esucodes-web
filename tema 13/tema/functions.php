@@ -706,7 +706,7 @@ function esucodes_get_tech_news() {
             'source'      => $sourceName,
         );
 
-        if (count($articles) >= 4) break;
+        if (count($articles) >= 6) break;
     }
 
     if (empty($articles)) {
