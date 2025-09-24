@@ -15,7 +15,7 @@ get_header(); ?>
     <div class="container">
         <div class="about-hero-content">
             <h1 class="about-hero-title"><?php echo get_theme_mod('about_hero_title', 'Hakkımızda'); ?></h1>
-            <p class="about-hero-subtitle"><?php echo get_theme_mod('about_hero_subtitle', 'Geleceğin yazılım topluluğu olarak, teknoloji dünyasında iz bırakıyoruz.'); ?></p>
+            <p class="about-hero-subtitle"><?php echo get_theme_mod('about_hero_subtitle', 'ESUcodes (Explore Software Universe), öğrencilerin birlikte öğrenip üretebileceği galaktik temalı yazılım topluluğu.'); ?></p>
         </div>
     </div>
 </section>
@@ -26,7 +26,7 @@ get_header(); ?>
         <div class="about-grid">
             <div class="about-text">
                 <h2><?php echo get_theme_mod('about_section_title', 'Biz Kimiz?'); ?></h2>
-                <p><?php echo get_theme_mod('about_section_text', 'ESUcodes, yazılım geliştirme alanında yenilikçi çözümler üreten bir topluluktur. Modern teknolojileri kullanarak, kullanıcı dostu ve etkili uygulamalar geliştiriyoruz.'); ?></p>
+                <p><?php echo get_theme_mod('about_section_text', 'ESUcodes (Explore Software Universe), yazılım dünyasında öğrencilerin birlikte öğrenip üretebileceği bir oluşumdur. Amacımız; yazılım öğrenmek isteyen gençlere keşif, üretim ve paylaşım alanı sunmak, projeler geliştirmelerine destek olmak ve ekip ruhunu güçlendirmektir.'); ?></p>
                 
                 <div class="about-stats">
                     <div class="stat-item">
@@ -60,13 +60,13 @@ get_header(); ?>
             <div class="mission-card">
                 <div class="mission-icon">🎯</div>
                 <h3><?php echo get_theme_mod('mission_title', 'Misyonumuz'); ?></h3>
-                <p><?php echo get_theme_mod('mission_text', 'Yazılım geliştirme alanında yenilikçi çözümler üreterek, müşterilerimizin dijital dönüşümüne katkıda bulunmak.'); ?></p>
+                <p><?php echo get_theme_mod('mission_text', 'Yazılım öğrenmek isteyen gençlere keşif, üretim ve paylaşım alanı sunmak; gerçek projeler geliştirmelerini desteklemek ve ekip ruhunu güçlendirmek.'); ?></p>
             </div>
             
             <div class="vision-card">
                 <div class="vision-icon">👁️</div>
                 <h3><?php echo get_theme_mod('vision_title', 'Vizyonumuz'); ?></h3>
-                <p><?php echo get_theme_mod('vision_text', 'Teknoloji dünyasında lider konuma gelerek, geleceğin yazılım standartlarını belirlemek.'); ?></p>
+                <p><?php echo get_theme_mod('vision_text', 'Galaktik temalı vizyonumuzla üyelerimizin teknik ve sosyal gelişimini destekliyor; Türkiye’den başlayan bu yolculuğu uluslararası bir yazılım evrenine taşımayı hedefliyoruz.'); ?></p>
             </div>
         </div>
     </div>
