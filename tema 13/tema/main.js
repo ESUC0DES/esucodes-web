@@ -135,6 +135,9 @@
         // Initialize blog accordion
         initBlogAccordion();
         
+        // Initialize 404 page animations
+        init404Animations();
+        
         // Add loading animations
         addLoadingAnimations();
     });
@@ -228,6 +231,146 @@
             }
         });
     };
+
+    // 404 Page Animations
+    function init404Animations() {
+        // Only run on 404 page
+        if (!document.body.classList.contains('error404')) return;
+        
+        // Animate error number on load
+        const errorNumber = document.querySelector('.error-number');
+        if (errorNumber) {
+            errorNumber.style.opacity = '0';
+            errorNumber.style.transform = 'scale(0.5)';
+            
+            setTimeout(() => {
+                errorNumber.style.transition = 'all 1s ease-out';
+                errorNumber.style.opacity = '1';
+                errorNumber.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Animate error icon
+        const errorIcon = document.querySelector('.error-icon');
+        if (errorIcon) {
+            errorIcon.style.opacity = '0';
+            errorIcon.style.transform = 'rotate(-180deg)';
+            
+            setTimeout(() => {
+                errorIcon.style.transition = 'all 1.5s ease-out';
+                errorIcon.style.opacity = '1';
+                errorIcon.style.transform = 'rotate(0deg)';
+            }, 800);
+        }
+        
+        // Stagger animation for quick links
+        const quickLinks = document.querySelectorAll('.quick-link');
+        quickLinks.forEach((link, index) => {
+            link.style.opacity = '0';
+            link.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                link.style.transition = 'all 0.6s ease-out';
+                link.style.opacity = '1';
+                link.style.transform = 'translateY(0)';
+            }, 1200 + (index * 150));
+        });
+        
+        // Animate recent posts
+        const recentPosts = document.querySelectorAll('.recent-post-card');
+        recentPosts.forEach((post, index) => {
+            post.style.opacity = '0';
+            post.style.transform = 'translateX(-30px)';
+            
+            setTimeout(() => {
+                post.style.transition = 'all 0.6s ease-out';
+                post.style.opacity = '1';
+                post.style.transform = 'translateX(0)';
+            }, 1800 + (index * 200));
+        });
+        
+        // Add hover effects for interactive elements
+        add404HoverEffects();
+        
+        // Add search functionality
+        init404Search();
+    }
+    
+    // 404 Hover Effects
+    function add404HoverEffects() {
+        const quickLinks = document.querySelectorAll('.quick-link');
+        const recentPosts = document.querySelectorAll('.recent-post-card');
+        
+        quickLinks.forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        recentPosts.forEach(post => {
+            post.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            post.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    }
+    
+    // 404 Search Functionality
+    function init404Search() {
+        const searchForm = document.querySelector('.error-search .search-form');
+        const searchField = document.querySelector('.search-field');
+        const searchSubmit = document.querySelector('.search-submit');
+        
+        if (searchForm && searchField && searchSubmit) {
+            // Add focus effects
+            searchField.addEventListener('focus', function() {
+                this.parentElement.style.borderColor = 'var(--accent-primary)';
+                this.parentElement.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.1)';
+            });
+            
+            searchField.addEventListener('blur', function() {
+                this.parentElement.style.borderColor = 'var(--border-color)';
+                this.parentElement.style.boxShadow = 'none';
+            });
+            
+            // Add loading state to search button
+            searchForm.addEventListener('submit', function(e) {
+                searchSubmit.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+                searchSubmit.style.pointerEvents = 'none';
+                
+                // Reset after 2 seconds if no redirect happens
+                setTimeout(() => {
+                    searchSubmit.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    searchSubmit.style.pointerEvents = 'auto';
+                }, 2000);
+            });
+        }
+    }
+    
+    // 404 Page Parallax Effect
+    function init404Parallax() {
+        if (!document.body.classList.contains('error404')) return;
+        
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const errorAnimation = document.querySelector('.error-animation');
+            
+            if (errorAnimation) {
+                const rate = scrolled * -0.5;
+                errorAnimation.style.transform = `translateY(${rate}px)`;
+            }
+        });
+    }
+    
+    // Initialize 404 parallax
+    init404Parallax();
 
     // AJAX functions
     window.esucodesAjax = {

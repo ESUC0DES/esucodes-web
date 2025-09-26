@@ -925,4 +925,226 @@ function esucodes_search_blog_posts() {
 add_action('wp_ajax_search_blog_posts', 'esucodes_search_blog_posts');
 add_action('wp_ajax_nopriv_search_blog_posts', 'esucodes_search_blog_posts');
 
+/**
+ * 404 sayfası için özel body class ekle
+ */
+function esucodes_404_body_class($classes) {
+    if (is_404()) {
+        $classes[] = 'error404';
+    }
+    return $classes;
+}
+add_filter('body_class', 'esucodes_404_body_class');
+
+/**
+ * 404 sayfası için özel title
+ */
+function esucodes_404_title($title) {
+    if (is_404()) {
+        return 'Sayfa Bulunamadı - ' . get_bloginfo('name');
+    }
+    return $title;
+}
+add_filter('wp_title', 'esucodes_404_title');
+
+/**
+ * 404 sayfası için özel meta description
+ */
+function esucodes_404_meta_description() {
+    if (is_404()) {
+        echo '<meta name="description" content="Aradığınız sayfa bulunamadı. Ana sayfaya dönün veya arama yapın." />';
+    }
+}
+add_action('wp_head', 'esucodes_404_meta_description');
+
+/**
+ * 404 sayfası için özel JavaScript dosyası yükle
+ */
+function esucodes_404_scripts() {
+    if (is_404()) {
+        // 404 sayfası için özel JavaScript
+        wp_add_inline_script('esucodes-script', '
+            // 404 sayfası animasyonları
+            document.addEventListener("DOMContentLoaded", function() {
+                // Error number animasyonu
+                const errorNumber = document.querySelector(".error-number");
+                if (errorNumber) {
+                    errorNumber.style.opacity = "0";
+                    errorNumber.style.transform = "scale(0.5)";
+                    
+                    setTimeout(() => {
+                        errorNumber.style.transition = "all 1s ease-out";
+                        errorNumber.style.opacity = "1";
+                        errorNumber.style.transform = "scale(1)";
+                    }, 300);
+                }
+                
+                // Error icon animasyonu
+                const errorIcon = document.querySelector(".error-icon");
+                if (errorIcon) {
+                    errorIcon.style.opacity = "0";
+                    errorIcon.style.transform = "rotate(-180deg)";
+                    
+                    setTimeout(() => {
+                        errorIcon.style.transition = "all 1.5s ease-out";
+                        errorIcon.style.opacity = "1";
+                        errorIcon.style.transform = "rotate(0deg)";
+                    }, 800);
+                }
+                
+                // Quick links animasyonu
+                const quickLinks = document.querySelectorAll(".quick-link");
+                quickLinks.forEach((link, index) => {
+                    link.style.opacity = "0";
+                    link.style.transform = "translateY(30px)";
+                    
+                    setTimeout(() => {
+                        link.style.transition = "all 0.6s ease-out";
+                        link.style.opacity = "1";
+                        link.style.transform = "translateY(0)";
+                    }, 1200 + (index * 150));
+                });
+                
+                // Recent posts animasyonu
+                const recentPosts = document.querySelectorAll(".recent-post-card");
+                recentPosts.forEach((post, index) => {
+                    post.style.opacity = "0";
+                    post.style.transform = "translateX(-30px)";
+                    
+                    setTimeout(() => {
+                        post.style.transition = "all 0.6s ease-out";
+                        post.style.opacity = "1";
+                        post.style.transform = "translateX(0)";
+                    }, 1800 + (index * 200));
+                });
+            });
+        ');
+    }
+}
+add_action('wp_enqueue_scripts', 'esucodes_404_scripts');
+
+/**
+ * 404 sayfası için özel redirect kuralları
+ */
+function esucodes_404_redirect_rules() {
+    // 404 sayfası için özel kurallar
+    add_rewrite_rule(
+        '^404/?$',
+        'index.php?error=404',
+        'top'
+    );
+}
+add_action('init', 'esucodes_404_redirect_rules');
+
+/**
+ * 404 sayfası için query vars ekle
+ */
+function esucodes_404_query_vars($vars) {
+    $vars[] = 'error';
+    return $vars;
+}
+add_filter('query_vars', 'esucodes_404_query_vars');
+
+/**
+ * 404 sayfası için template redirect
+ */
+function esucodes_404_template_redirect() {
+    if (get_query_var('error') === '404') {
+        status_header(404);
+        include(get_template_directory() . '/404.php');
+        exit;
+    }
+}
+add_action('template_redirect', 'esucodes_404_template_redirect');
+
+/**
+ * 404 sayfası için güçlü template kontrolü
+ */
+function esucodes_404_template_control($template) {
+    if (is_404()) {
+        $custom_404 = get_template_directory() . '/404.php';
+        if (file_exists($custom_404)) {
+            return $custom_404;
+        }
+    }
+    return $template;
+}
+add_filter('404_template', 'esucodes_404_template_control');
+
+/**
+ * 404 sayfası için rewrite kurallarını zorla yenile
+ */
+function esucodes_force_404_rewrite() {
+    // Rewrite kurallarını yenile
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'esucodes_force_404_rewrite');
+
+/**
+ * Admin'de rewrite kurallarını yenile butonu
+ */
+function esucodes_admin_rewrite_flush() {
+    if (isset($_GET['flush_rewrite']) && $_GET['flush_rewrite'] == '1' && current_user_can('manage_options')) {
+        flush_rewrite_rules();
+        wp_redirect(admin_url('themes.php?page=esucodes-options&rewrite_flushed=1'));
+        exit;
+    }
+}
+add_action('admin_init', 'esucodes_admin_rewrite_flush');
+
+/**
+ * 404 sayfası için zorla template yükleme
+ */
+function esucodes_force_404_template() {
+    if (is_404()) {
+        // 404 sayfası için özel template yükle
+        $template_path = get_template_directory() . '/404.php';
+        if (file_exists($template_path)) {
+            status_header(404);
+            include($template_path);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'esucodes_force_404_template', 1);
+
+/**
+ * 404 sayfası debug fonksiyonu
+ */
+function esucodes_debug_404() {
+    if (current_user_can('administrator') && isset($_GET['debug_404'])) {
+        echo '<!-- 404 Debug Info: ';
+        echo 'is_404: ' . (is_404() ? 'true' : 'false') . ', ';
+        echo 'template: ' . get_page_template() . ', ';
+        echo 'body_class: ' . implode(' ', get_body_class());
+        echo ' -->';
+    }
+}
+add_action('wp_head', 'esucodes_debug_404');
+
+/**
+ * 404 sayfası için manuel rewrite yenileme
+ */
+function esucodes_manual_rewrite_flush() {
+    if (isset($_GET['esucodes_flush']) && $_GET['esucodes_flush'] == '1') {
+        flush_rewrite_rules();
+        echo '<div style="background: #4CAF50; color: white; padding: 10px; margin: 10px 0; border-radius: 5px;">Rewrite kuralları yenilendi!</div>';
+    }
+}
+add_action('wp_head', 'esucodes_manual_rewrite_flush');
+
+/**
+ * 404 sayfası için güçlü template kontrolü - en yüksek öncelik
+ */
+function esucodes_404_priority_template($template) {
+    if (is_404()) {
+        $custom_404 = get_template_directory() . '/404.php';
+        if (file_exists($custom_404)) {
+            return $custom_404;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'esucodes_404_priority_template', 999);
+
  
