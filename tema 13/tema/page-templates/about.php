@@ -53,6 +53,17 @@ get_header(); ?>
     </div>
 </section>
 
+<!-- Page Editor Content (Gutenberg) -->
+<section class="about-editor-content">
+	<div class="container">
+		<?php while (have_posts()) : the_post(); ?>
+			<div class="about-editor-inner">
+				<?php the_content(); ?>
+			</div>
+		<?php endwhile; ?>
+	</div>
+</section>
+
 <!-- Mission & Vision -->
 <section class="mission-vision">
     <div class="container">
