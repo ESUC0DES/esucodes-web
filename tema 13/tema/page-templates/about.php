@@ -1,153 +1,124 @@
 <?php
 /**
- * Template Name: Hakkımızda Sayfası
+ * Template Name: Hakkımızda Sayfası (Kurumsal)
  *
  * @package ESUcodes
+ * Description: ESUCODES Ar-Ge ve Teknoloji Stüdyosu için özel şablon.
  */
 
 get_header(); ?>
 
-<!-- Progress Bar -->
 <div class="progress-bar" id="progressBar"></div>
 
-<!-- About Hero Section -->
 <section class="about-hero">
     <div class="container">
         <div class="about-hero-content">
-            <h1 class="about-hero-title"><?php echo get_theme_mod('about_hero_title', 'Hakkımızda'); ?></h1>
-            <p class="about-hero-subtitle"><?php echo get_theme_mod('about_hero_subtitle', 'ESUcodes (Explore Software Universe), öğrencilerin birlikte öğrenip üretebileceği galaktik temalı yazılım topluluğu.'); ?></p>
+            <h1 class="about-hero-title"><?php echo get_theme_mod('about_hero_title', 'Sınırları Olmayan Bir Teknoloji Evreni'); ?></h1>
+            <p class="about-hero-subtitle"><?php echo get_theme_mod('about_hero_subtitle', 'Teknolojiyi kategorilere ayırmadan, bir bütün olarak keşfediyor ve geleceği kodluyoruz.'); ?></p>
         </div>
     </div>
 </section>
 
-<!-- About Content -->
 <section class="about-content">
     <div class="container">
         <div class="about-grid">
             <div class="about-text">
                 <h2><?php echo get_theme_mod('about_section_title', 'Biz Kimiz?'); ?></h2>
-                <p><?php echo get_theme_mod('about_section_text', 'ESUcodes (Explore Software Universe), yazılım dünyasında öğrencilerin birlikte öğrenip üretebileceği bir oluşumdur. Amacımız; yazılım öğrenmek isteyen gençlere keşif, üretim ve paylaşım alanı sunmak, projeler geliştirmelerine destek olmak ve ekip ruhunu güçlendirmektir.'); ?></p>
+                <div class="corporate-text">
+                    <p><?php echo get_theme_mod('about_text_p1', 'ESUCODES (Explore Software Universe), teknolojik sınırların ötesine geçmeyi hedefleyen, yazılım dünyasını kategorilere ayırmak yerine onu bir bütün olarak ele alan yeni nesil bir teknoloji girişimidir.'); ?></p>
+                    
+                    <p><?php echo get_theme_mod('about_text_p2', 'Klasik uzmanlık tanımlarının ve kalıpların aksine, biz teknolojiyi sürekli genişleyen bir evren olarak görüyoruz. Faaliyet alanımız, ekibimizin merakı ve teknolojinin getirdiği yeniliklerle sınırlıdır. Burası, unvanların değil, problem çözme yeteneğinin ve üretme tutkusunun konuştuğu dinamik bir inovasyon merkezidir.'); ?></p>
+                </div>
                 
                 <div class="about-stats">
                     <div class="stat-item">
-                        <span class="stat-number"><?php echo get_theme_mod('about_stat_1_number', '50+'); ?></span>
-                        <span class="stat-label"><?php echo get_theme_mod('about_stat_1_label', 'Tamamlanan Proje'); ?></span>
+                        <span class="stat-number"><?php echo get_theme_mod('about_stat_1_number', '∞'); ?></span>
+                        <span class="stat-label"><?php echo get_theme_mod('about_stat_1_label', 'Teknoloji'); ?></span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number"><?php echo get_theme_mod('about_stat_2_number', '100+'); ?></span>
-                        <span class="stat-label"><?php echo get_theme_mod('about_stat_2_label', 'Mutlu Müşteri'); ?></span>
+                        <span class="stat-number"><?php echo get_theme_mod('about_stat_2_number', '100%'); ?></span>
+                        <span class="stat-label"><?php echo get_theme_mod('about_stat_2_label', 'Ar-Ge Odaklı'); ?></span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number"><?php echo get_theme_mod('about_stat_3_number', '5+'); ?></span>
-                        <span class="stat-label"><?php echo get_theme_mod('about_stat_3_label', 'Yıllık Deneyim'); ?></span>
+                        <span class="stat-number"><?php echo get_theme_mod('about_stat_3_number', 'Global'); ?></span>
+                        <span class="stat-label"><?php echo get_theme_mod('about_stat_3_label', 'Hedef'); ?></span>
                     </div>
                 </div>
             </div>
             
             <div class="about-image">
-                <div class="about-image-placeholder">
-                    <span class="image-icon">🏢</span>
+                <div class="about-image-placeholder" style="background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);">
+                    <span class="image-icon">🌐</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Page Editor Content (Gutenberg) -->
 <section class="about-editor-content">
-	<div class="container">
-		<?php while (have_posts()) : the_post(); ?>
-			<div class="about-editor-inner">
-				<?php the_content(); ?>
-			</div>
-		<?php endwhile; ?>
-	</div>
+    <div class="container">
+        <?php while (have_posts()) : the_post(); ?>
+            <div class="about-editor-inner">
+                <?php the_content(); ?>
+            </div>
+        <?php endwhile; ?>
+    </div>
 </section>
 
-<!-- Mission & Vision -->
-<section class="mission-vision">
+<section class="mission-vision" style="background-color: #f9fbfd; padding: 70px 0; position: relative; z-index: 1;">
     <div class="container">
+        
         <div class="mission-vision-grid">
-            <div class="mission-card">
-                <div class="mission-icon">🎯</div>
-                <h3><?php echo get_theme_mod('mission_title', 'Misyonumuz'); ?></h3>
-                <p><?php echo get_theme_mod('mission_text', 'Yazılım öğrenmek isteyen gençlere keşif, üretim ve paylaşım alanı sunmak; gerçek projeler geliştirmelerini desteklemek ve ekip ruhunu güçlendirmek.'); ?></p>
-            </div>
-            
-            <div class="vision-card">
-                <div class="vision-icon">👁️</div>
-                <h3><?php echo get_theme_mod('vision_title', 'Vizyonumuz'); ?></h3>
-                <p><?php echo get_theme_mod('vision_text', 'Galaktik temalı vizyonumuzla üyelerimizin teknik ve sosyal gelişimini destekliyor; Türkiye’den başlayan bu yolculuğu uluslararası bir yazılım evrenine taşımayı hedefliyoruz.'); ?></p>
+            <div class="mission-card" style="width: 100%; background: #ffffff; padding: 45px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid #edf2f7;"> 
+                <div class="mission-icon" style="font-size: 2.5rem; margin-bottom: 20px; color: #3498db;">🧬</div>
+                <h3 style="color: #2c3e50; font-weight: 700; margin-bottom: 15px;"><?php echo get_theme_mod('approach_title', 'Adaptasyon ve Özgür Üretim'); ?></h3>
+                <p style="font-size: 1.05rem; line-height: 1.8; color: #555;">
+                    <?php echo get_theme_mod('approach_text', 'Dijital dünya her saniye değişirken, sabit bir tanıma bağlı kalmak gelişimi durdurmaktır. ESUCODES olarak, kategorize edilmiş dikey uzmanlıklar yerine, her türlü teknolojik yapıya hızla adapte olabilen esnek bir mühendislik kültürünü benimsiyoruz. Hedefimiz; teknolojinin hangi alt dalı olursa olsun, o alanda derinleşebilmek ve "yapılamaz" denileni kod satırlarıyla gerçeğe dönüştürmektir.'); ?>
+                </p>
             </div>
         </div>
+        
+        <div class="vision-box" style="margin-top: 30px; text-align: center; padding: 40px; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid #edf2f7;">
+            <h3 style="color: #333; margin-bottom: 15px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; color: #888;">Vizyonumuz</h3>
+            <p style="font-size: 1.25em; font-weight: 500; color: #2c3e50; max-width: 850px; margin: 0 auto; font-family: 'Georgia', serif; font-style: italic;">
+                "<?php echo get_theme_mod('vision_text', 'Merak eden, sorgulayan ve üreten zihinler için global standartlarda bir çekim merkezi olmak; yerel potansiyeli evrensel projelere dönüştüren bir teknoloji üssü haline gelmek.'); ?>"
+            </p>
+        </div>
+
     </div>
 </section>
 
-<!-- Values Section -->
-<section class="values-section">
-    <div class="container">
-        <h2 class="section-title"><?php echo get_theme_mod('values_title', 'Değerlerimiz'); ?></h2>
-        <div class="values-grid">
-            <div class="value-card">
-                <div class="value-icon">💡</div>
-                <h4><?php echo get_theme_mod('value_1_title', 'Yenilikçilik'); ?></h4>
-                <p><?php echo get_theme_mod('value_1_text', 'Sürekli öğrenme ve gelişim ile yenilikçi çözümler üretiyoruz.'); ?></p>
-            </div>
-            
-            <div class="value-card">
-                <div class="value-icon">🤝</div>
-                <h4><?php echo get_theme_mod('value_2_title', 'Güvenilirlik'); ?></h4>
-                <p><?php echo get_theme_mod('value_2_text', 'Müşterilerimizle güvene dayalı, uzun vadeli ilişkiler kuruyoruz.'); ?></p>
-            </div>
-            
-            <div class="value-card">
-                <div class="value-icon">⚡</div>
-                <h4><?php echo get_theme_mod('value_3_title', 'Hız'); ?></h4>
-                <p><?php echo get_theme_mod('value_3_text', 'Hızlı ve etkili çözümlerle müşteri ihtiyaçlarını karşılıyoruz.'); ?></p>
-            </div>
-            
-            <div class="value-card">
-                <div class="value-icon">🌟</div>
-                <h4><?php echo get_theme_mod('value_4_title', 'Kalite'); ?></h4>
-                <p><?php echo get_theme_mod('value_4_text', 'En yüksek kalite standartlarında çalışarak mükemmel sonuçlar elde ediyoruz.'); ?></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Team Section -->
 <section class="team-section">
     <div class="container">
-        <h2 class="section-title"><?php echo get_theme_mod('team_title', 'Ekibimiz'); ?></h2>
+        <h2 class="section-title"><?php echo get_theme_mod('team_title', 'Yönetim ve Geliştirme Ekibi'); ?></h2>
         <div class="team-grid">
+            
             <div class="team-member">
-                <div class="member-avatar">
-                    <span class="avatar-letter">A</span>
-                </div>
-                <h4 class="member-name"><?php echo get_theme_mod('team_member_1_name', 'Ahmet Yılmaz'); ?></h4>
-                <p class="member-role"><?php echo get_theme_mod('team_member_1_role', 'Baş Geliştirici'); ?></p>
-                <p class="member-bio"><?php echo get_theme_mod('team_member_1_bio', '5+ yıl deneyimli full-stack geliştirici.'); ?></p>
+                <div class="member-avatar"><span class="avatar-letter">ES</span></div>
+                <h4 class="member-name"><?php echo get_theme_mod('team_member_1_name', 'Kurucu Ortak'); ?></h4>
+                <p class="member-role"><?php echo get_theme_mod('team_member_1_role', 'Teknoloji Mimarı'); ?></p>
             </div>
             
             <div class="team-member">
-                <div class="member-avatar">
-                    <span class="avatar-letter">S</span>
-                </div>
-                <h4 class="member-name"><?php echo get_theme_mod('team_member_2_name', 'Selin Demir'); ?></h4>
-                <p class="member-role"><?php echo get_theme_mod('team_member_2_role', 'UI/UX Tasarımcı'); ?></p>
-                <p class="member-bio"><?php echo get_theme_mod('team_member_2_bio', 'Kullanıcı deneyimi odaklı tasarım uzmanı.'); ?></p>
+                <div class="member-avatar"><span class="avatar-letter">DEV</span></div>
+                <h4 class="member-name"><?php echo get_theme_mod('team_member_2_name', 'Lead Developer'); ?></h4>
+                <p class="member-role"><?php echo get_theme_mod('team_member_2_role', 'Ar-Ge Mühendisi'); ?></p>
             </div>
             
-            <div class="team-member">
-                <div class="member-avatar">
-                    <span class="avatar-letter">M</span>
-                </div>
-                <h4 class="member-name"><?php echo get_theme_mod('team_member_3_name', 'Mehmet Kaya'); ?></h4>
-                <p class="member-role"><?php echo get_theme_mod('team_member_3_role', 'Proje Yöneticisi'); ?></p>
-                <p class="member-bio"><?php echo get_theme_mod('team_member_3_bio', 'Agile metodolojiler konusunda uzman.'); ?></p>
+             <div class="team-member">
+                <div class="member-avatar"><span class="avatar-letter">ENG</span></div>
+                <h4 class="member-name"><?php echo get_theme_mod('team_member_3_name', 'Sistem Mühendisi'); ?></h4>
+                <p class="member-role"><?php echo get_theme_mod('team_member_3_role', 'Altyapı & Çözüm'); ?></p>
             </div>
+
+            <div class="team-member">
+                <div class="member-avatar"><span class="avatar-letter">+</span></div>
+                <h4 class="member-name"><?php echo get_theme_mod('team_member_4_name', 'Aramıza Katıl'); ?></h4>
+                <p class="member-role"><?php echo get_theme_mod('team_member_4_role', 'Kariyer Fırsatları'); ?></p>
+            </div>
+
         </div>
     </div>
 </section>
 
-<?php get_footer(); ?> 
+<?php get_footer(); ?>
