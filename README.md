@@ -69,7 +69,7 @@ tema 13/tema/
     ├── about.php           # Hakkımızda
     ├── services.php        # Hizmetler
     ├── contact.php         # İletişim
-    └── login.php           # Yönetici girişi (sadece admin)
+    └── login.php           # Yönetici girişi (sadece admin). 
 ```
 
 ## Sayfa Şablonları
